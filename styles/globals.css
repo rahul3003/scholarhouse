@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,14 +19,20 @@
   }
 }
 
+
+html {
+  font-family: 'Inter', sans-serif;
+}
+
+.dark body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Light mode styles */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #ffffff;
+  color: #333333;
 }
 
 @layer utilities {
