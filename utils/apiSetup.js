@@ -18,7 +18,7 @@ export let injectStore = (_store) => {
 console.log(process.env.NODE_ENV);
 
 const api = axios.create({
-  baseURL: urls[process.env.NODE_ENV],
+  baseURL: "https://scholahouse.in/api/v1",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -75,9 +75,7 @@ api.interceptors.response.use(
       toast.error(err.response.data.message);
       return Promise.reject(err.response.data);
     } else if (err.request) {
-
       toast("Couldnt reach the server", { type: "error" });
-
     } else {
       // Something happened in setting up the request that triggered an Error
       console.log("Error", err.message);
