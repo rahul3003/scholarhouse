@@ -6,7 +6,7 @@ export let urls = {
   test: "http://65.2.74.65:8000/api/v1",
   development: "http://localhost:5000/api/v1",
   // development: "http://ec2-43-205-233-226.ap-south-1.compute.amazonaws.com:5000/api/v1",
-  production: "/api/v1",
+  production: "https://scholahouse.in/api/v1",
 };
 
 let store;
