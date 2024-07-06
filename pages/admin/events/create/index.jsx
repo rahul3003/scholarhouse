@@ -1,4 +1,4 @@
-import EventForm from "@/components/forms/EventForm";
+// import EventForm from "@/components/forms/EventForm";
 import AdminLayout from "@/components/layout/AdminLayout";
 import Head from "next/head";
 
@@ -15,7 +15,7 @@ export default function eventCreate() {
       }
     >
       <main className="flex flex-col  w-full flex-1 px-4 text-center">
-        <EventForm />
+        {/* <EventForm /> */}
       </main>
     </AdminLayout>
   );

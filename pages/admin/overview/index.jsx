@@ -18,8 +18,8 @@ const Overview = () => {
         </Head>
       }
     >
-      <div className="flex flex-col md:flex-row gap-3 py-2">
-        <div className="flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row gap-3 py-2 w-full">
+        <div className="flex gap-6 w-full justify-between">
           <Container className="m-0 md:w-[70%] flex flex-col md:flex-row gap-6">
             <OverviewStats title="Members" value="26505" change="+15.03%" />
             <OverviewStats title="Community" value="715" change="-0.03%" />

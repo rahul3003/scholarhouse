@@ -7,15 +7,23 @@ const Header = ({ toggleTheme, mode }) => {
   return (
     <AppBar
       position="static"
-      className="flex  justify-between bg-white dark:bg-black text-black dark:text-white shadow-none border-b-[1px] "
+      sx={{ backgroundColor: "#fff", color: "#000", boxShadow: "none" }} // Correct usage
+      className="flex justify-between shadow-none border-b-[1px] text-black dark:bg-black dark:text-white" // Avoid conflicting bg classes
     >
       <Toolbar className="flex justify-between">
         <div className="flex gap-2 items-center">
-          <Typography color="inherit" className="text-[14px]">
+          {/* <Typography color="inherit" className="text-[14px]">
             Dashboard
+          </Typography> */}
+          {/* <Typography className="text-[14px]">/</Typography> */}
+          <Typography className="text-[14px] flex gap-2">
+            {window.location.pathname
+              ?.split("/")
+              ?.slice(1, window.location.pathname?.split("/")?.length)
+              ?.map((data, index) => (
+                <div key={index}>{`/ ${data}`}</div>
+              ))}
           </Typography>
-          <Typography className="text-[14px]">/</Typography>
-          <Typography className="text-[14px]">Default</Typography>
         </div>
         <div className="flex items-center gap-3">
           <IconButton color="inherit">

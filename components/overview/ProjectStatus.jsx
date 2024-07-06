@@ -38,7 +38,7 @@ const ProjectStatus = () => {
           </ResponsiveContainer>
           <div className="flex flex-col gap-6">
             {data.map((data, index) => (
-              <div className="flex items-center gap-2 ">
+              <div className="flex items-center gap-2 " key={index}>
                 <div
                   className={`w-[8px] min-h-[8px] rounded-full  ${
                     index == -0 ? "bg-[#B1E3FF]" : "bg-[#1C1C1C]"

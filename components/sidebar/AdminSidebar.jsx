@@ -7,33 +7,49 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  Collapse,
+  useTheme,
+  useMediaQuery,
   Typography,
   IconButton,
-  Collapse,
+  Button,
 } from "@mui/material";
 import { PiChartPieSliceFill } from "react-icons/pi";
 import { FiSettings } from "react-icons/fi";
 import { FaUsers } from "react-icons/fa";
-import { AiOutlineUser } from "react-icons/ai";
 import { BiMessageSquareDetail } from "react-icons/bi";
-import { RiSurveyLine } from "react-icons/ri";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { BsCalendarEvent } from "react-icons/bs";
-import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowRight, MdMenu } from "react-icons/md";
 import { IoMdBook } from "react-icons/io";
+import { BsCalendarEvent } from "react-icons/bs";
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowRight,
+  MdMenu,
+  MdOutlineKeyboardArrowLeft,
+} from "react-icons/md";
 import Link from "next/link";
-import { useTheme, useMediaQuery } from "@mui/material";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, selectUser } from "@/store/features/userSlice";
+import Image from "next/image";
+import HomeIcon from "@mui/icons-material/Home";
 
 const AdminSidebar = () => {
+  const router = useRouter();
+  const user = useSelector(selectUser);
+
   const [page, setPage] = useState({ link: "Overview", state: false });
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // State for sidebar collapse/expand
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  const drawerWidth = 240;
-
+  const drawerWidth = sidebarOpen ? 240 : 72; // Adjust width based on state
+  const dispatch = useDispatch();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   const handlePageClick = (link) => {
@@ -43,243 +59,298 @@ const AdminSidebar = () => {
     }));
   };
 
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
+  const renderAdminItems = () => (
+    <>
+      <SidebarLink
+        href="/admin/Home"
+        text="Home"
+        icon={<HomeIcon />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/admin/manageAccess"
+        text="Manage Access"
+        icon={<FaUsers size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/communities/explore"
+        text="Communities"
+        icon={<FaUsers size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarCollapse
+        text="Sessions"
+        icon={<IoMdBook size={25} />}
+        page={page}
+        handlePageClick={handlePageClick}
+        handleNavigation={handleNavigation}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/admin/events"
+        text="My Schedule"
+        icon={<BsCalendarEvent size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/admin/settings"
+        text="Settings"
+        icon={<FiSettings size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+    </>
+  );
+
+  const renderExpertItems = () => (
+    <>
+      <SidebarLink
+        href="/faculty/overview"
+        text="Overview"
+        icon={<PiChartPieSliceFill size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/communities/explore"
+        text="Communities"
+        icon={<FaUsers size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarCollapse
+        text="Sessions"
+        icon={<IoMdBook size={25} />}
+        page={page}
+        handlePageClick={handlePageClick}
+        handleNavigation={handleNavigation}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/faculty/mySchedule"
+        text="My Schedule"
+        icon={<BsCalendarEvent size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/faculty/resources"
+        text="Resources"
+        icon={<IoMdBook size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/faculty/profile"
+        text="My Profile"
+        icon={<FaUsers />}
+        sidebarOpen={sidebarOpen}
+      />
+      {/* <SidebarLink
+        href="/faculty/requests"
+        text="Requests"
+        icon={<BiMessageSquareDetail size={25} />}
+        sidebarOpen={sidebarOpen}
+      /> */}
+      <SidebarLink
+        href="/faculty/settings"
+        text="Settings"
+        icon={<FiSettings size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+    </>
+  );
+
+  const renderUserItems = () => (
+    <>
+      <SidebarLink
+        href="/users/overview"
+        text="Overview"
+        icon={<PiChartPieSliceFill size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/communities/explore"
+        text="Communities"
+        icon={<FaUsers size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/users/mySchedule"
+        text="My Schedule"
+        icon={<BsCalendarEvent size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/users/resources"
+        text="Resources"
+        icon={<IoMdBook size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/users/profile"
+        text="My Profile"
+        icon={<FaUsers size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/users/requests"
+        text="Requests"
+        icon={<BiMessageSquareDetail size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+      <SidebarLink
+        href="/users/settings"
+        text="Settings"
+        icon={<FiSettings size={25} />}
+        sidebarOpen={sidebarOpen}
+      />
+    </>
+  );
+
   const drawer = (
-    <div>
-      <Toolbar>
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ flexGrow: 1, px: 2 }}
-        >
-          ScholarHouse
-        </Typography>
-      </Toolbar>
-      <Typography
-        sx={{ fontSize: 16, color: "text.secondary", px: 3, py: 1 }}
-        noWrap
-        component="div"
-      >
-        Dashboard
-      </Typography>
-      <List sx={{ mx: 1 }}>
-        <Link href="/admin/overview" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                borderRadius: 1,
-              }}
-              className={`${page.link === "Overview" ? "bg-gray-200 dark:bg-gray-800":""}`}
-              onClick={() => handlePageClick("Overview")}
-            >
-              <ListItemIcon>
-                <PiChartPieSliceFill />
-              </ListItemIcon>
-              <ListItemText primary="Overview" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <ListItem disablePadding onClick={() => handlePageClick("Sessions")}>
-          <ListItemButton
-            sx={{
-              borderRadius: 1,
-            }}
-            className={`${page.link === "Sessions" ? "bg-gray-200 dark:bg-gray-800":""}`}
+    <div className="flex flex-col justify-between h-full">
+      <div>
+        <div className="flex justify-between items-center gap=-2">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, px: 2 }}
           >
-            <ListItemIcon>
-              {page.link === "Sessions" && page.state ? (
-                <MdOutlineKeyboardArrowDown />
-              ) : (
-                <MdOutlineKeyboardArrowRight />
-              )}
-            </ListItemIcon>
-            <IoMdBook />
-            <ListItemText primary="Sessions" />
-          </ListItemButton>
-        </ListItem>
-        <Collapse in={page.link === "Sessions" && page.state} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding sx={{ pl: 4 }}>
-            <Link href="/admin/sessions" passHref>
-              <ListItemButton>
-                <ListItemText primary="Sessions Subitem" />
-              </ListItemButton>
-            </Link>
-          </List>
-        </Collapse>
-        <Link href="/admin/communities" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Communities" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Communities")}
-            >
-              <ListItemIcon>
-                <FaUsers />
-              </ListItemIcon>
-              <ListItemText primary="Communities" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/profile" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Profile" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Profile")}
-            >
-              <ListItemIcon>
-                <AiOutlineUser />
-              </ListItemIcon>
-              <ListItemText primary="My Profile" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/requests" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Requests" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Requests")}
-            >
-              <ListItemIcon>
-                <BiMessageSquareDetail />
-              </ListItemIcon>
-              <ListItemText primary="Requests" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/survey" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Survey" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Survey")}
-            >
-              <ListItemIcon>
-                <RiSurveyLine />
-              </ListItemIcon>
-              <ListItemText primary="Survey" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Typography sx={{ fontSize: 16, color: "text.secondary", px: 3, py: 1 }} noWrap component="div">
-          Pages
-        </Typography>
-        <Link href="/admin/department" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Department" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Department")}
-            >
-              <ListItemIcon>
-                <HiOutlineBuildingOffice2 />
-              </ListItemIcon>
-              <ListItemText primary="My Department" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/events" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Events" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Events")}
-            >
-              <ListItemIcon>
-                <BsCalendarEvent />
-              </ListItemIcon>
-              <ListItemText primary="Events" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/requests-page" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "RequestsPage" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("RequestsPage")}
-            >
-              <ListItemIcon>
-                <BiMessageSquareDetail />
-              </ListItemIcon>
-              <ListItemText primary="Requests" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/admin/settings" passHref>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                pl: 3,
-                bgcolor: page.link === "Settings" ? "grey.200" : "transparent",
-                borderRadius: 1,
-              }}
-              onClick={() => handlePageClick("Settings")}
-            >
-              <ListItemIcon>
-                <FiSettings />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-      </List>
+            <Image
+              src="/logo.svg"
+              alt="logo"
+              width={sidebarOpen ? 200 : 50}
+              height={200}
+            />
+          </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ display: { md: "none" }, ml: 1 }}
+          >
+            <MdMenu />
+          </IconButton>
+          <IconButton onClick={handleSidebarToggle} sx={{ mx: "auto", my: 2 }}>
+            {sidebarOpen ? (
+              <MdOutlineKeyboardArrowLeft />
+            ) : (
+              <MdOutlineKeyboardArrowRight />
+            )}
+          </IconButton>
+        </div>
+        <List sx={{ mx: 1 }}>
+          {user?.unifiedUserId?.adminId && renderAdminItems()}
+          {user?.unifiedUserId?.expertId && renderExpertItems()}
+          {user?.unifiedUserId?.userId && renderUserItems()}
+        </List>
+      </div>
+      <Button
+        color="error"
+        onClick={() => {
+          dispatch(logoutUser());
+          router.push("/signup");
+        }}
+        className="mb-12"
+      >
+        Logout
+      </Button>
     </div>
   );
 
   return (
     <nav>
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        edge="start"
-        onClick={handleDrawerToggle}
-        sx={{ display: { md: "none" }, ml: 1 }}
-      >
-        <MdMenu />
-      </IconButton>
-      <Drawer
-        variant={isMobile ? "temporary" : "permanent"}
-        open={!isMobile || mobileOpen}
-        onClose={isMobile ? handleDrawerToggle : undefined}
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
+      {isMobile ? (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      ) : (
+        <Drawer
+          variant="permanent"
+          sx={{
             width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        ModalProps={{
-          keepMounted: true,
-        }}
-      >
-        {drawer}
-      </Drawer>
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              flexShrink: 0,
+              transition: theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      )}
     </nav>
   );
 };
+
+const SidebarLink = ({ href, text, icon, sidebarOpen }) => (
+  <Link href={href} passHref>
+    <ListItem disablePadding>
+      <ListItemButton sx={{ borderRadius: 1 }}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        {sidebarOpen && <ListItemText primary={text} />}
+      </ListItemButton>
+    </ListItem>
+  </Link>
+);
+
+const SidebarCollapse = ({
+  text,
+  icon,
+  page,
+  handlePageClick,
+  handleNavigation,
+  sidebarOpen,
+}) => (
+  <>
+    <ListItem disablePadding onClick={() => handlePageClick(text)}>
+      <ListItemButton sx={{ borderRadius: 1 }}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        {sidebarOpen && <ListItemText primary={text} />}
+        {sidebarOpen &&
+          (page.link === text && page.state ? (
+            <MdOutlineKeyboardArrowDown />
+          ) : (
+            <MdOutlineKeyboardArrowRight />
+          ))}
+      </ListItemButton>
+    </ListItem>
+    <Collapse
+      in={page.link === text && page.state}
+      timeout="auto"
+      unmountOnExit
+    >
+      <List component="div" disablePadding sx={{ pl: 4 }}>
+        <ListItemButton onClick={() => handleNavigation("/admin/sessions")}>
+          <ListItemText primary="View All" />
+        </ListItemButton>
+        <ListItemButton
+          onClick={() => handleNavigation("/admin/sessions/my_sessions")}
+        >
+          <ListItemText primary="My Sessions" />
+        </ListItemButton>
+      </List>
+    </Collapse>
+  </>
+);
 
 export default AdminSidebar;
